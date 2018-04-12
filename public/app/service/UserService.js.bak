@@ -1,0 +1,49 @@
+(function(){
+
+    var authenticationService = function(AjaxService, URLS, CONFIG, CookieStorageService, $rootScope) {
+        var factory = {};
+        
+        // for hiding loading on certain requests
+        var withoutLoadingBar = true;
+
+        factory.getUserCredentialsFromStorage = function () {
+            return CookieStorageService.getObjectFromStorage(CONFIG.AUTH_USER_KEY);
+        }
+
+        factory.removeStorage = function () {
+            CookieStorageService.removeObjectInStorage(CONFIG.AUTH_USER_KEY)   
+        }
+
+        factory.saveCredentialsToCookie = function (response) {
+
+            var authUser = {
+                token: response.access_token,
+                expiry: response.expires_in,
+                tokenType: response.token_type,
+                role: response.authorities[0].authority,
+                firstName : response.first_name,
+                lastName : response.last_name,
+                name : response.first_name + " " + response.last_name,
+                userName : response.username,
+                email : response.email,
+                timeoutInterval : response.timeoutInterval
+            };
+
+            // save authentication credentials in cookie
+            CookieStorageService.setObjectInStorage(CONFIG.AUTH_USER_KEY, authUser);
+        }
+
+        factory.login = function (credentials) {
+            var url = URLS.API_SERVER+"api/token";
+            return AjaxService.doPost(url, {},credentials, null, null, withoutLoadingBar);
+        }
+        
+        return factory;
+
+    };
+
+    authenticationService.$inject = ['AjaxService', 'URLS', 'CONFIG', 'CookieStorageService', '$rootScope'];
+
+    angular.module('app').factory('AuthenticationService', authenticationService);
+
+}());

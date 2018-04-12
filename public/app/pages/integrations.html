@@ -1,0 +1,61 @@
+
+<div class="container body">
+        
+    <div class="main_container">
+    <!-- sidebar menu -->
+        
+    <ng-include src="'app/pages/sidebar.html'"></ng-include>
+
+    <!-- /sidebar menu -->
+
+    <!-- page content -->
+    <div class="right_col" role="main">
+      <div class="">
+        <div class="page-title">
+          <div class="title_left">
+            <h3>Integration</h3>
+          </div>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+			<a ui-sref="integrations/new">
+				<!--button type="submit" ng-click="addIntegration()">Add Integration</button-->
+				<button type="submit">Add Integration</button>
+			</a>
+          </div>
+		   <div class="x_content">
+                <table id="datatable" class="table table-striped table-bordered" >
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Name</th>
+                            <th>Last Sync</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="x in content">
+                            <td>{{x.type}}</td>
+                            <td>{{x.name}}</td>
+                            <td>{{x.last_synced}}</td>
+                            <td>{{x.status}}</td>
+                            <td><button ng-click='removeIntegration(x.id)'>REMOVE</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+			</div>		
+        </div>
+      </div>
+    </div>
+    <!-- /page content -->
+
+    <!-- footer content -->
+      <ng-include src="'app/pages/footer.html'"></ng-include>
+    <!-- /footer content -->
+
+    </div>
+</div>
